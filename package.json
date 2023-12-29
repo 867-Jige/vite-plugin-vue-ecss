@@ -1,0 +1,29 @@
+{
+  "name": "vite-plugin-vue-ecss",
+  "version": "1.0.3",
+  "description": "快速生成样式代码的vite-vue插件",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "vite build"
+  },
+  "keywords": [
+    "vite-plugin-vue-ecss",
+    "vite-plugin",
+    "ecss",
+    "css",
+    "less",
+    "scss"
+  ],
+  "author": "867",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "vite": "^5.0.10"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}
