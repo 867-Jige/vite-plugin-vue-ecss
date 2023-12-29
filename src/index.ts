@@ -83,7 +83,6 @@ export default function vitePluginVueEcss(config?: Tconfig) {
       // 比较模板是否有修改
       let isEdit = templateIsEdit(id, templateString);
       if (isEdit) {
-        console.log(id);
         // 缓存模板字符串
         templateMap[id] = templateString;
         // 获取带有前缀的类名
