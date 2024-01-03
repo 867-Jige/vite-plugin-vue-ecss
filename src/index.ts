@@ -9,17 +9,17 @@ let appClass: Array<string> = [];
 const classRegex = /class="([^"]*)"/g;
 // 提取class属性值上的每个类名
 const classValueRegex = /['"]?([\w-]+)['"]?/g;
-// 样式文件是否已有数据
-let isWrited: boolean = false;
 // 缓存.vue文件template模板字符串
 let templateMap: anyKey = {};
 // 路径正则
 let pathRegExp =
-  /(^[a-zA-Z]:[\\\S|*\S]?.+(\.css|\.scss|\.less)$)|(^(.\/|\/|~\/|..\/)([^/\0]+\/)*[^/\0]*((\.css)|(\.scss)|(\.less))$)/;
+  /(^[a-zA-Z]:[\\\S|*\S]?.+(\.css|\.scss|\.less|\.sass)$)|(^(.\/|\/|~\/|..\/)([^/\0]+\/)*[^/\0]*((\.css)|(\.scss)|(\.less)|(\.sass))$)/;
 // 属性值的分隔符
 let attrValueDecollator: string = "-";
 // 排除指定的分割符
 let excludeattrDecollators: Array<string> = [attrValueDecollator];
+// 模板字符串正则
+const templateRegex = /<template>([\s\S]+)<\/template>/;
 
 /**
  * 配置项
@@ -71,15 +71,20 @@ function init(config?: Tconfig) {
 export default function vitePluginVueEcss(config?: Tconfig) {
   init(config);
   // 先创建样式文件
-  addStyleContent("");
+  createFile("");
   return {
     name: "vite-plugin-vue-ecss",
     transform(source: any, id: string) {
       if (!id.endsWith(".vue")) {
         return null;
       }
-      // // 截取模板
+      // 截取模板
       let templateString = cutOutTemplate(source);
+      if (!templateString) {
+        // vite5版本
+        const fileContent = fs.readFileSync(id, "utf-8");
+        templateString = cutOutTemplate(fileContent);
+      }
       // 比较模板是否有修改
       let isEdit = templateIsEdit(id, templateString);
       if (isEdit) {
@@ -96,7 +101,6 @@ export default function vitePluginVueEcss(config?: Tconfig) {
 }
 // 截取模板字符串
 function cutOutTemplate(source: string) {
-  const templateRegex = /<template>([\s\S]+)<\/template>/;
   const match = source.match(templateRegex);
   let templateString = "";
   if (match) {
@@ -158,7 +162,7 @@ function matchStyle(classNames: string[]) {
           .split(attrValueDecollator)
           .filter((item) => item);
         let attr: string = attrNameAndValue[0] || "";
-        let value: string = attrNameAndValue[1] || "";
+        let value: string = attrNameAndValue.slice(1).join(" ") || "";
         let attrName = appAttrMap[attr];
         if (attrName && value) {
           classContent += `    ${attrName}: ${value} !important;\n`;
@@ -173,11 +177,19 @@ function matchStyle(classNames: string[]) {
 }
 // 添加样式内容
 function addStyleContent(content) {
-  fs.appendFile(outputPath, content, (err) => {
+  fs.appendFileSync(outputPath, content, fileCallback("appending"));
+}
+// 创建样式文件
+function createFile(content) {
+  fs.writeFile(outputPath, content, fileCallback("writeFile"));
+}
+// 文件回调
+function fileCallback(type) {
+  return (err) => {
     if (err) {
-      console.error("Error appending content to file:", err);
+      console.error(`Error ${type} content to file:`, err);
     } else {
-      console.log("Content appended to file successfully.");
+      console.log(`Content ${type} to file successfully.`);
     }
-  });
+  };
 }
