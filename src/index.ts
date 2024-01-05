@@ -20,7 +20,8 @@ let attrValueDecollator: string = "-";
 let excludeattrDecollators: Array<string> = [attrValueDecollator];
 // 模板字符串正则
 const templateRegex = /<template>([\s\S]+)<\/template>/;
-
+// 16进制的颜色值正则
+const colorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 /**
  * 配置项
  * */
@@ -165,6 +166,9 @@ function matchStyle(classNames: string[]) {
         let value: string = attrNameAndValue.slice(1).join(" ") || "";
         let attrName = appAttrMap[attr];
         if (attrName && value) {
+          if (attrName === "color") {
+            value = colorRegex.test("#" + value) ? "#" + value : value;
+          }
           classContent += `    ${attrName}: ${value} !important;\n`;
         }
       });
