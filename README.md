@@ -77,6 +77,24 @@ vitePluginVueEcss({
 }
 ```
 
+# Tips：When you need to set a color, the color value in your class name does not need to be written with a # sign, for example:
+
+```html
+<div class="ecss--fs-20px--color-blue ecss--bgc-ff0000"></div>
+```
+
+## The resulting style file is as follows
+
+```css
+.ecss--fs-20px--color-blue {
+  font-size: 20px !important;
+  color: blue !important;
+}
+.ecss--bgc-ff0000 {
+  background-color: #ff0000 !important;
+}
+```
+
 # Abbreviated mapping of style attribute names
 
 ```js
@@ -93,6 +111,7 @@ vitePluginVueEcss({
   afm: "animation-fill-mode",
   aic: "animation-iteration-count",
   an: "animation-name",
+  ani: "animation",
   aps: "animation-play-state",
   are: "animation-range-end",
   ars: "animation-range-start",
@@ -102,19 +121,19 @@ vitePluginVueEcss({
   a: "appearance",
   bf: "backdrop-filter",
   bv: "backface-visibility",
-  ba: "background-attachment",
-  bbm: "background-blend-mode",
-  bc: "background-clip",
+  bga: "background-attachment",
+  bgbm: "background-blend-mode",
+  bgClip: "background-clip",
   bg: "background",
   bgc: "background-color",
-  bi: "background-image",
-  bo: "background-origin",
-  bp: "background-position",
-  br: "background-repeat",
-  bs: "background-size",
+  bgi: "background-image",
+  bgo: "background-origin",
+  bgp: "background-position",
+  bgr: "background-repeat",
+  bgs: "background-size",
   bShift: "baseline-shift",
   bSource: "baseline-source",
-  bSize: "block-size",
+  bs: "block-size",
   bbec: "border-block-end-color",
   bbes: "border-block-end-style",
   bbew: "border-block-end-width",
@@ -126,7 +145,7 @@ vitePluginVueEcss({
   bbrr: "border-bottom-right-radius",
   bbs: "border-bottom-style",
   bbw: "border-bottom-width",
-  bCo: "border-collapse",
+  bCol: "border-collapse",
   bd: "border",
   beer: "border-end-end-radius",
   besr: "border-end-start-radius",
