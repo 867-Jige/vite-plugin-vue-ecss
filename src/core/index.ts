@@ -20,9 +20,9 @@ let templateMap: anyKey = {};
 let pathRegExp =
   /(^[a-zA-Z]:[\\\S|*\S]?.+(\.css|\.scss|\.less|\.sass)$)|(^(.\/|\/|~\/|..\/)([^/\0]+\/)*[^/\0]*((\.css)|(\.scss)|(\.less)|(\.sass))$)/;
 // 属性值的分隔符
-let attrValueDecollator: string = "-";
-// 排除指定的分割符
-let excludeattrDecollators: Array<string> = [attrValueDecollator];
+let attrValueDecollator: string = "__";
+// 属性间的分割符
+let attrDecollator: string = "--";
 // 模板字符串正则
 const templateRegex = /<template>([\s\S]+)<\/template>/;
 // 16进制的颜色值正则
@@ -34,17 +34,14 @@ export type Tconfig = {
   fileName?: string;
   prefix?: string;
   outputPath?: string;
-  attrDecollator?: string;
 };
 // 输出文件名
 let fileName: string = "ecss.css";
-// 文件扩展名
 // 类名前缀
 let prefix: string = "ecss";
 // 输出文件的位置
 let outputPath: string = "";
-// 属性间的分割符
-let attrDecollator = "--";
+
 /**
  * 初始化配置
  * @param config
@@ -54,22 +51,13 @@ export function initConfig(config?: Tconfig) {
   // 刷新输出路径
   outputPath = "./" + fileName;
   prefix = config?.prefix || prefix;
-
-  if (config?.attrDecollator) {
-    if (
-      !excludeattrDecollators.includes(config.attrDecollator.replace(/\s/g, ""))
-    ) {
-      attrDecollator = config.attrDecollator;
-    }
-  }
-
   if (config?.outputPath && pathRegExp.test(config?.outputPath)) {
     outputPath = config.outputPath;
     fileName = outputPath.replace(/\\|\//g, "/").split("/").pop() || fileName;
   }
   // 先创建样式文件
   createFile(outputPath);
-  createVscodeTips(prefix);
+  createVscodeTips(prefix, attrDecollator, attrValueDecollator);
 }
 
 /**
@@ -161,7 +149,7 @@ function matchStyle(classNames: string[]) {
         let attr: string = attrNameAndValue[0] || "";
         let value: string = attrNameAndValue.slice(1).join(" ") || "";
         let attrName = baseAttrsMap[attr];
-        if (attrName && value) {
+        if (attrName && value && value.length) {
           if (attrName === "color") {
             value = colorRegex.test("#" + value) ? "#" + value : value;
           }

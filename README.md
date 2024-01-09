@@ -54,20 +54,24 @@ vitePluginVueEcss({
 
 ```
 
+## Rules written for class names
+
+### Prefix and attribute are separated by '--', when multiple attributes are set in a class name, they are also separated by '--', when multiple values need to be set in a property, the attribute values are separated by '\_\_'. Specifically as follows
+
 ## class edit
 
 ```html
-<div class="ecss--w-100px--h-100px ecss--mg-20px-10px"></div>
+<div class="ecss--w__100px--h__100px ecss--mg__20px__10px"></div>
 ```
 
 ## The resulting style file is as follows
 
 ```css
-.ecss--w-100px--h-100px {
+.ecss--w__100px--h__100px {
   width: 100px !important;
   height: 100px !important;
 }
-.ecss--mg-20px-10px {
+.ecss--mg__20px__10px {
   margin: 20px 10px !important;
 }
 ```
@@ -75,17 +79,17 @@ vitePluginVueEcss({
 # Tips：When you need to set a color, the color value in your class name does not need to be written with a # sign, for example:
 
 ```html
-<div class="ecss--ft_s-20px--color-blue ecss--bgc-ff0000"></div>
+<div class="ecss--ft_s__20px--color__blue ecss--bgc__ff0000"></div>
 ```
 
 ## The resulting style file is as follows
 
 ```css
-.ecss--ft_s-20px--color-blue {
+.ecss--ft_s__20px--color__blue {
   font-size: 20px !important;
   color: blue !important;
 }
-.ecss--bgc-ff0000 {
+.ecss--bgc__ff0000 {
   background-color: #ff0000 !important;
 }
 ```
