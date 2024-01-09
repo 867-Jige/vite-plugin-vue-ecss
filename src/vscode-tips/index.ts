@@ -1,4 +1,4 @@
-import { createFile, mkdirSync } from "../file-operation/index";
+import { createFile, mkdirSync, readFileSync } from "../file-operation/index";
 import { baseAttrsMap } from "../core/styleAttrsMap";
 const findPackageJson = require("find-package-json");
 
@@ -25,13 +25,26 @@ function createCodeTips(path, content) {
 }
 // 创建vscodetips配置
 function createSetting(path) {
-  let content = `
-  {
-    "editor.quickSuggestions": {
+  let fileData = "";
+  let content = "";
+  let setKey = '"editor.quickSuggestions"';
+  try {
+    fileData = readFileSync(path);
+    // 解析为 JavaScript 对象
+    const fileContent = JSON.parse(fileData);
+    let strings = fileContent[setKey].strings;
+    if (!strings) {
+      fileContent[setKey].strings = true;
+      content = JSON.stringify(fileContent, null, 2);
+    }
+  } catch (error) {
+    content = `{
+    ${setKey}: {
       "strings": true
     }
   }`;
-  createFile(path, content);
+  }
+  content && createFile(path, content);
 }
 // 获取代码提示片段
 function getCodeSnippet() {
