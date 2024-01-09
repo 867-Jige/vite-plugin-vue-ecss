@@ -34,12 +34,6 @@ vitePluginVueEcss({
     fileName: string,
 
   /**
-   * This is the default separator '--' between prefix and name attribute,
-   * with space and -invalid This is the default separator '--' between prefix and name attribute, with space and -invalid.
-   * */
-    attrDecollator: string
-
-  /**
    *   The class name matches the prefix. Default  'ecss'
    * */
     prefix: string
