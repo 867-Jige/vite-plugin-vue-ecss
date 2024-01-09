@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-vue-ecss",
-  "version": "3.0.52",
+  "version": "3.0.62",
   "description": "可根据类名快速生成样式代码的vite-vue插件",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
