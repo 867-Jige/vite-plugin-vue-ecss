@@ -69,7 +69,7 @@ export function initConfig(config?: Tconfig) {
   }
   // 先创建样式文件
   createFile(outputPath);
-  createVscodeTips();
+  createVscodeTips(prefix);
 }
 
 /**
